@@ -12,12 +12,12 @@ export default function attributeImport({
   const registeredControllers = new Set();
 
   const loadControllers = async (element: Element | Document) => {
-    element.querySelectorAll(`[${attribute}]`).forEach((c) => {
+    element.querySelectorAll(`[${attribute}]`).forEach(c => {
       const controllerNames = c.getAttribute(attribute);
 
       if (!controllerNames) return;
 
-      controllerNames.split(" ").forEach(async (controllerName) => {
+      controllerNames.split(" ").forEach(async controllerName => {
         if (!controllerName || registeredControllers.has(controllerName)) {
           return;
         }
@@ -32,7 +32,7 @@ export default function attributeImport({
   };
 
   new MutationObserver(function callback(mutationList) {
-    mutationList.forEach(function ({ target }) {
+    mutationList.forEach(function({ target }) {
       if (target instanceof Element) {
         loadControllers(target);
       }
