@@ -11,22 +11,22 @@ export default function attributeImport({
 }: Arguments) {
   const registeredControllers = new Set();
 
-  const loadControllers = async (element: Element | Document) => {
+  const loadControllers = (element: Element | Document) => {
     element.querySelectorAll(`[${attribute}]`).forEach(c => {
       const controllerNames = c.getAttribute(attribute);
 
       if (!controllerNames) return;
 
-      controllerNames.split(" ").forEach(async controllerName => {
+      controllerNames.split(" ").forEach(controllerName => {
         if (!controllerName || registeredControllers.has(controllerName)) {
           return;
         }
 
         registeredControllers.add(controllerName);
 
-        const { default: controller } = await importFunction(controllerName);
-
-        onRegister(controllerName, controller);
+        importFunction(controllerName).then(({ default: controller }) => {
+          onRegister(controllerName, controller);
+        });
       });
     });
   };
